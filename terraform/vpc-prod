@@ -1,8 +1,7 @@
-resource "aws_vpc" "dev_vpc" {
-
-  cidr_block = var.dev_vpc_cidr
+resource "aws_vpc" "prod_vpc" {
+  cidr_block = "10.30.0.0/16"
 
   tags = {
-    Name = "dev-vpc"
+    Name = "prod-vpc"
   }
 }
