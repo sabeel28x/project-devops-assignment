@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Deploy
 
 on:
   push:
@@ -6,11 +6,35 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - uses: actions/checkout@v3
 
-      - name: Build Docker Image
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ap-south-1
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password \
+          | docker login --username AWS --password-stdin $ECR_REPO
+
+      - name: Build Image
         run: docker build -t ecostream-app ./app
+
+      - name: Push Image
+        run: docker push $ECR_REPO
+
+      - name: Deploy ECS
+        run: |
+          aws ecs update-service \
+          --cluster ecostream-cluster \
+          --service ecostream-service \
+          --force-new-deployment
