@@ -1,5 +1,6 @@
-resource "aws_lb" "app_lb" {
+resource "aws_lb" "app_alb" {
+
   name               = "ecostream-alb"
-  internal           = false
   load_balancer_type = "application"
+  internal           = false
 }
