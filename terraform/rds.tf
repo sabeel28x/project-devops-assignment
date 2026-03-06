@@ -1,9 +1,12 @@
-resource "aws_db_instance" "db" {
-  allocated_storage    = 20
-  engine               = "postgres"
-  instance_class       = "db.t3.micro"
-  name                 = "ecostream"
-  username             = "admin"
-  password             = "changeme"
-  skip_final_snapshot  = true
+resource "aws_db_instance" "postgres" {
+
+  allocated_storage = 20
+  engine            = "postgres"
+
+  instance_class = "db.t3.micro"
+
+  username = "admin"
+  password = "StrongPassword123"
+
+  skip_final_snapshot = true
 }
